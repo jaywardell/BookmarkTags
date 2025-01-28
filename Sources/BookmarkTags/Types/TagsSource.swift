@@ -7,6 +7,7 @@
 
 import SwiftUICore
 
+@MainActor
 public protocol TagsSource: ObservableObject {
 
     var tags: [TagInfo] { get }
