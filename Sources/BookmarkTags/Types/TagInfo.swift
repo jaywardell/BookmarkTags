@@ -11,6 +11,11 @@ public struct TagInfo {
     public let name: String
     public let colorHue: CGFloat
     
+    public init(name: String, colorHue: CGFloat) {
+        self.name = name
+        self.colorHue = colorHue
+    }
+    
     var color: Color {
         // using HSL color space
         // so that all tags are more or less the same color temperature
