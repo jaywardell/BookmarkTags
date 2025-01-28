@@ -23,6 +23,7 @@ public struct TagInfo {
 
 extension TagInfo: Equatable {}
 extension TagInfo: Hashable {}
+extension TagInfo: Sendable {}
 extension TagInfo: Identifiable {
     public var id: String { name + String(Double(colorHue)) }
 }
