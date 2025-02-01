@@ -163,14 +163,25 @@ struct SelectedTagsSummary<T: TagsSource>: View {
 }
 
 #Preview {
+    
+    @Previewable @State var width: CGFloat = 200
+    
     VStack(alignment: .leading) {
         ForEach(0 ..< ExampleTagsSource.examples.count, id: \.self) { index in
             let tags = ExampleTagsSource.examples[index]
             Text("\(tags.count) tags")
                 .font(.headline)
-            SelectedTagsSummary(tags: tags)
-                .padding(.bottom)
+            HStack {
+                SelectedTagsSummary(tags: tags)
+                    .frame(width: width)
+                    .padding(.bottom)
+                    .debuggingBorder(.secondary.opacity(0.2))
+                Spacer()
+            }
         }
+        
+        Slider(value: $width, in: 30 ... 300)
     }
     .padding()
+    .frame(width: 400)
 }
