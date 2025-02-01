@@ -151,13 +151,16 @@ struct SelectedTagsSummary<T: TagsSource>: View {
     }
 
     var body: some View {
-        ViewThatFits {
-            longest
-            longer
-            long
-            short
-            shorter
-            shortest
+        HStack {
+            ViewThatFits {
+                longest
+                longer
+                long
+                short
+                shorter
+                shortest
+            }
+            Spacer()
         }
     }
 }
