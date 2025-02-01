@@ -132,22 +132,29 @@ struct BookmarkTagShaped: ViewModifier {
             let leadingIndent = indentedEdge == .leading ? indent : 0
             let trailingIndent = indentedEdge == .trailing ? indent : 0
 
-            path.move(to: CGPoint(x: rect.minX, y: rect.minY))
-            
+            path.move(to: CGPoint(x: rect.minX - leadingIndent, y: rect.minY))
+
             // bookmark should extend indent distance beyond its bounding rectangle
             path.addLine(to: CGPoint(x: rect.maxX + trailingIndent, y: rect.minY))
             
-            path.addLine(to: CGPoint(x: rect.maxX, y: rect.midY))
-            
-            path.addLine(to: CGPoint(x: rect.maxX + trailingIndent, y: rect.maxY))
-         
+            if indentedEdge == .trailing {
+                path.addLine(to: CGPoint(x: rect.maxX, y: rect.midY))
+                
+                path.addLine(to: CGPoint(x: rect.maxX + trailingIndent, y: rect.maxY))
+            }
+            else {
+                path.move(to: CGPoint(x: rect.maxX + trailingIndent, y: rect.maxY))
+            }
+
             path.addLine(to: CGPoint(x: rect.minX - leadingIndent, y: rect.maxY))
             
-            path.addLine(to: CGPoint(x: rect.minX, y: rect.midY))
-            
-            path.addLine(to: CGPoint(x: rect.minX - leadingIndent, y: rect.minY))
+            if indentedEdge == .leading {
+                path.addLine(to: CGPoint(x: rect.minX, y: rect.midY))
+                
+                path.addLine(to: CGPoint(x: rect.minX - leadingIndent, y: rect.minY))
+            }
 
-            path.closeSubpath()
+//            path.closeSubpath()
             
             return path
         }
