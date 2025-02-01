@@ -82,7 +82,7 @@ struct BookmarkTagShaped: ViewModifier {
             .padding(.horizontal)
             .background(fillColor(isPressed), in: BookmarkFillShape(indentedEdge: bookmarkedEdge, indent: indent))
             .overlay {
-                BookmarkFillShape(indentedEdge: bookmarkedEdge, indent: indent)
+                BookmarkStrokeShape(indentedEdge: bookmarkedEdge, indent: indent)
                     .stroke(color)
             }
             .foregroundStyle(isPressed ? .highlightedTagTextColor : color)
@@ -90,6 +90,38 @@ struct BookmarkTagShaped: ViewModifier {
     }
     
     private struct BookmarkFillShape: Shape {
+                
+        let indentedEdge: IndentedEdge
+        let indent: CGFloat
+        
+        nonisolated func path(in rect: CGRect) -> Path {
+            var path = Path()
+            
+            let leadingIndent = indentedEdge == .leading ? indent : 0
+            let trailingIndent = indentedEdge == .trailing ? indent : 0
+
+            path.move(to: CGPoint(x: rect.minX, y: rect.minY))
+            
+            // bookmark should extend indent distance beyond its bounding rectangle
+            path.addLine(to: CGPoint(x: rect.maxX + trailingIndent, y: rect.minY))
+            
+            path.addLine(to: CGPoint(x: rect.maxX, y: rect.midY))
+            
+            path.addLine(to: CGPoint(x: rect.maxX + trailingIndent, y: rect.maxY))
+         
+            path.addLine(to: CGPoint(x: rect.minX - leadingIndent, y: rect.maxY))
+            
+            path.addLine(to: CGPoint(x: rect.minX, y: rect.midY))
+            
+            path.addLine(to: CGPoint(x: rect.minX - leadingIndent, y: rect.minY))
+
+            path.closeSubpath()
+            
+            return path
+        }
+    }
+
+    private struct BookmarkStrokeShape: Shape {
                 
         let indentedEdge: IndentedEdge
         let indent: CGFloat
