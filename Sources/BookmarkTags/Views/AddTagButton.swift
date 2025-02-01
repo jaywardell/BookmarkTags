@@ -104,6 +104,15 @@ struct AddTagButton: View {
             .frame(maxWidth: .infinity, alignment: .leading)
 
         Spacer()
+        
+        AddTagButton(bookmarkedEdge: .leading) { print($0) }
+            .frame(maxWidth: .infinity, alignment: .trailing)
+            .padding()
+        
+        AddTagButton(bookmarkedEdge: .trailing) { print($0) }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding()
+
         Spacer()
     }
     .reasonablySizedPreview()
