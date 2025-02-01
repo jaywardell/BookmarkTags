@@ -20,8 +20,17 @@ public struct TagInfo {
         // using HSL color space
         // so that all tags are more or less the same color temperature
         // TODO: HSI could give more consistent brightness of colors
-        // TODO: these look like ass in macOS dark mode, haven't tested in light mode
-        Color(hue: colorHue, saturation: 29/34, lightness: 13/34)
+        // TODO: these look okay in dark mode, but could look better
+        let lightness: CGFloat = switch colorScheme {
+        case .light:
+             13/34
+        case .dark:
+            21/34
+        @unknown default:
+            0.5
+        }
+        
+        return Color(hue: colorHue, saturation: 29/34, lightness: lightness)
     }
 
 }
