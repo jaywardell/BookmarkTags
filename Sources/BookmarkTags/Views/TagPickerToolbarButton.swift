@@ -33,15 +33,17 @@ public struct TagPickerToolbarButton<T: TagsSource>: View {
             let tag = tags.selected.tags[0]
             Label(tag.name, systemImage: "bookmark")
                 .foregroundStyle(tag.color)
+                .symbolVariant(.fill)
+
         default:
             Label {
                 Text(tags.selected.tags.keyedLabelTitle)
+                    .foregroundStyle(LinearGradient(colors: tags.selected.tags.map(\.color), startPoint: .leading, endPoint: .trailing))
             } icon: {
-                // TODO: somehow present multiple bookmark icons
-                // but iOS doesn't seem to want to let me
-                // do that in the toolbar
-                Image(systemName: "bookmark.fill")
-                    .foregroundStyle(tags.selected.tags[0].color)
+                // I can't show multiple bookmark iamges,
+                // but I can show a gradient of their colors
+                GradientColoredImage(systemImageName: "bookmark", colors: tags.selected.tags.map(\.color))
+                    .symbolVariant(.fill)
             }
         }
     }
