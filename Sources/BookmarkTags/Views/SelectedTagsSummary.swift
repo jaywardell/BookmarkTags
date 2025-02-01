@@ -12,12 +12,6 @@ struct SelectedTagsSummary: View {
     let tags: [TagInfo]
 
     private var bookmarkName: String { "bookmark" }
-        
-    private var gradientBookmarkImage: some View {
-        Image(systemName: bookmarkName)
-            .foregroundStyle(AngularGradient(colors: tags.map(\.color), center: .center))
-            .symbolVariant(.fill)
-    }
     
     @ViewBuilder
     var shortest: some View {
@@ -27,7 +21,8 @@ struct SelectedTagsSummary: View {
                 .foregroundStyle(.secondary)
 
         default:
-            gradientBookmarkImage
+            GradientColoredImage(systemImageName: bookmarkName, colors: tags.map(\.color))
+                .symbolVariant(.fill)
         }
     }
 
@@ -119,7 +114,8 @@ struct SelectedTagsSummary: View {
                 .lineLimit(1)
                 .multilineTextAlignment(.leading)
             } icon: {
-                gradientBookmarkImage
+                GradientColoredImage(systemImageName: bookmarkName, colors: tags.map(\.color))
+                    .symbolVariant(.fill)
             }
 
             
