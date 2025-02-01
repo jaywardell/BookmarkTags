@@ -72,7 +72,6 @@ public struct TagPickerToolbarButton<T: TagsSource>: View {
     }
 }
 
-
 #Preview("Has a Few") {
     @Previewable @State var predicate: TagsPredicateType = .allTags
     
@@ -83,4 +82,5 @@ public struct TagPickerToolbarButton<T: TagsSource>: View {
                     .labelStyle(.titleAndIcon)
             }
     }
+    .frame(width: 400, height: 200)
 }
