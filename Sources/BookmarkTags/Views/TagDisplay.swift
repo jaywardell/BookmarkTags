@@ -33,9 +33,7 @@ struct TagDisplay: View {
 }
 
 #Preview {
-    
-    Spacer()
-    
+        
     VStack {
         TagDisplay(.init(name: "example", colorHue: 200/360), .leading) {}
             .frame(maxWidth: .infinity, alignment: .trailing)
@@ -55,7 +53,5 @@ struct TagDisplay: View {
         TagDisplay(.init(name: "a much much much longer tag name, I mean it's ridiculous how long this name is", colorHue: 40/360), .trailing) {}
             .frame(maxWidth: .infinity, alignment: .leading)
     }
-    
-    Spacer()
-    Spacer()
+    .reasonablySizedPreview()
 }
