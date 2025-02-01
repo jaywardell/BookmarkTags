@@ -80,16 +80,16 @@ struct BookmarkTagShaped: ViewModifier {
             .frame(height: tagHeight)
             .frame(alignment: contentAlignment)
             .padding(.horizontal)
-            .background(fillColor(isPressed), in: BookmarkShape(indentedEdge: bookmarkedEdge, indent: indent))
+            .background(fillColor(isPressed), in: BookmarkFillShape(indentedEdge: bookmarkedEdge, indent: indent))
             .overlay {
-                BookmarkShape(indentedEdge: bookmarkedEdge, indent: indent)
+                BookmarkFillShape(indentedEdge: bookmarkedEdge, indent: indent)
                     .stroke(color)
             }
             .foregroundStyle(isPressed ? .highlightedTagTextColor : color)
             .frame(minHeight: controlHeight)
     }
     
-    private struct BookmarkShape: Shape {
+    private struct BookmarkFillShape: Shape {
                 
         let indentedEdge: IndentedEdge
         let indent: CGFloat
@@ -108,6 +108,7 @@ struct BookmarkTagShaped: ViewModifier {
             path.addLine(to: CGPoint(x: rect.maxX, y: rect.midY))
             
             path.addLine(to: CGPoint(x: rect.maxX + trailingIndent, y: rect.maxY))
+         
             path.addLine(to: CGPoint(x: rect.minX - leadingIndent, y: rect.maxY))
             
             path.addLine(to: CGPoint(x: rect.minX, y: rect.midY))
