@@ -14,6 +14,8 @@ public struct TagPickerToolbarButton<T: TagsSource>: View {
     @Binding private var predicateType: TagsPredicateType
     @State private var showingPopover = false
     
+    @Environment(\.colorScheme) var colorScheme
+
     public init(
         tags: T,
         predicateType: Binding<TagsPredicateType>
@@ -32,17 +34,17 @@ public struct TagPickerToolbarButton<T: TagsSource>: View {
         case 1:
             let tag = tags.selected.tags[0]
             Label(tag.name, systemImage: "bookmark")
-                .foregroundStyle(tag.color)
+                .foregroundStyle(tag.color(for: colorScheme))
                 .symbolVariant(.fill)
 
         default:
             Label {
                 Text(tags.selected.tags.keyedLabelTitle)
-                    .foregroundStyle(LinearGradient(colors: tags.selected.tags.map(\.color), startPoint: .leading, endPoint: .trailing))
+                    .foregroundStyle(LinearGradient(colors: tags.selected.tags.map { $0.color(for: colorScheme) }, startPoint: .leading, endPoint: .trailing))
             } icon: {
                 // I can't show multiple bookmark iamges,
                 // but I can show a gradient of their colors
-                GradientColoredImage(systemImageName: "bookmark", colors: tags.selected.tags.map(\.color))
+                GradientColoredImage(systemImageName: "bookmark", colors: tags.selected.tags.map { $0.color(for: colorScheme) })
                     .symbolVariant(.fill)
             }
         }

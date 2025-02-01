@@ -24,6 +24,8 @@ struct TagToggle: View {
     
     @Binding private var isSelected: Bool
     
+    @Environment(\.colorScheme) var colorScheme
+
     init(_ viewModel: TagInfo,
          _ bookmarkEdge: BookmarkTagShaped.IndentedEdge,
          isSelected: Binding<Bool>,
@@ -58,7 +60,7 @@ struct TagToggle: View {
             
             if bookmarkEdge == .leading {
                 accessoryButton
-                    .foregroundStyle(viewModel.color)
+                    .foregroundStyle(viewModel.color(for: colorScheme))
                     .padding(.horizontal)
             }
 
@@ -67,14 +69,14 @@ struct TagToggle: View {
                 Text(viewModel.name)
             }
             .onLongPressGesture(perform: buttonAction)
-            .toggleStyle(TagToggleStyle(bookmarkEdge: bookmarkEdge, color: viewModel.color, wide: fullsize))
+            .toggleStyle(TagToggleStyle(bookmarkEdge: bookmarkEdge, color: viewModel.color(for: colorScheme), wide: fullsize))
             .onTapGesture(count: 2, perform: doubleTapAction)
             .animation(.easeInOut, value: isSelected)
             
             if bookmarkEdge == .trailing {
                 
                 accessoryButton
-                    .foregroundStyle(viewModel.color)
+                    .foregroundStyle(viewModel.color(for: colorScheme))
                     .padding(.horizontal)
             }
         }
@@ -175,8 +177,6 @@ fileprivate struct Example: View {
     }
 }
 #Preview {
-    
-
-    
     Example()
+        .widerPreview()
 }

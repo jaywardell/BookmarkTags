@@ -20,6 +20,8 @@ struct TagEditor: View {
     
     @State private var showingDeleteAlert = false
     
+    @Environment(\.colorScheme) var colorScheme
+
     private var newTagInfo: TagInfo {
         .init(name: newName, colorHue: newColorHue)
     }
@@ -66,7 +68,7 @@ struct TagEditor: View {
                             .bold()
 
                         Text(tagInfo.name)
-                            .modifier(BookmarkTagShaped(bookmarkedEdge: .leading, isExpanded: true, isPressed: false, maxContentWidth: 233, color: tagInfo.color))
+                            .modifier(BookmarkTagShaped(bookmarkedEdge: .leading, isExpanded: true, isPressed: false, maxContentWidth: 233, color: tagInfo.color(for: colorScheme)))
                             .frame(maxWidth: .infinity, alignment: .trailing)
                     }
                     .padding(.leading)
@@ -86,7 +88,7 @@ struct TagEditor: View {
                         .frame(maxWidth: .infinity)
                         .focused($focusedField, equals: true)
                         .textFieldStyle(.plain)
-                        .modifier(BookmarkTagShaped(bookmarkedEdge: .leading, isExpanded: true, isPressed: false, maxContentWidth: 233, color: newTagInfo.color))
+                        .modifier(BookmarkTagShaped(bookmarkedEdge: .leading, isExpanded: true, isPressed: false, maxContentWidth: 233, color: newTagInfo.color(for: colorScheme)))
                         .frame(maxWidth: .infinity, alignment: .trailing)
                         .onAppear {
                             focusedField = true
@@ -104,7 +106,7 @@ struct TagEditor: View {
                     Slider(value: $newColorHue, in: 0 ... 1) {
                         Label("Color:", systemImage: "")
                     }
-                    .accentColor(newTagInfo.color)
+                    .accentColor(newTagInfo.color(for: colorScheme))
                     .padding()
                     .labelStyle(.titleOnly)
                 }

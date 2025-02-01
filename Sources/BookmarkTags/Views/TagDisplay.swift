@@ -16,6 +16,8 @@ struct TagDisplay: View {
     
     let action: () -> Void
         
+    @Environment(\.colorScheme) var colorScheme
+
     init(
         _ viewModel: TagInfo,
         _ bookmarkEdge: BookmarkTagShaped.IndentedEdge,
@@ -28,7 +30,7 @@ struct TagDisplay: View {
     
     var body: some View {
         Button(viewModel.name, action: action)
-            .buttonStyle(BookmarkButtonStyle(isExpanded: true, bookmarkedEdge: bookmarkEdge, color: viewModel.color))
+            .buttonStyle(BookmarkButtonStyle(isExpanded: true, bookmarkedEdge: bookmarkEdge, color: viewModel.color(for: colorScheme)))
     }
 }
 

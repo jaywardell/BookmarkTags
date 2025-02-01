@@ -16,7 +16,7 @@ public struct TagInfo {
         self.colorHue = colorHue
     }
     
-    var color: Color {
+    func color(for colorScheme: ColorScheme) -> Color {
         // using HSL color space
         // so that all tags are more or less the same color temperature
         // TODO: HSI could give more consistent brightness of colors
