@@ -7,25 +7,21 @@
 
 import SwiftUI
 
-struct SelectedTagsSummary<T: TagsSource>: View {
+struct SelectedTagsSummary: View {
     
-    @ObservedObject var tags: T
+    let tags: [TagInfo]
 
     private var bookmarkName: String { "bookmark" }
         
-    // TODO: this should be tags.selected
-    // but right now I don't have a simple preview for that
-    private var tagsToShow: [TagInfo] { tags.tags }
-
     private var gradientBookmarkImage: some View {
         Image(systemName: bookmarkName)
-            .foregroundStyle(AngularGradient(colors: tagsToShow.map(\.color), center: .center))
+            .foregroundStyle(AngularGradient(colors: tags.map(\.color), center: .center))
             .symbolVariant(.fill)
     }
     
     @ViewBuilder
     var shortest: some View {
-        switch tagsToShow.count {
+        switch tags.count {
         case 0:
             Image(systemName: bookmarkName)
                 .foregroundStyle(.secondary)
@@ -38,15 +34,15 @@ struct SelectedTagsSummary<T: TagsSource>: View {
     
     @ViewBuilder
     var shorter: some View {
-        switch tagsToShow.count {
+        switch tags.count {
         case 0:
             Image(systemName: bookmarkName)
                 .foregroundStyle(.secondary)
 
         default:
             HStack(spacing: 0) {
-                ForEach(0 ..< tagsToShow.count, id: \.self) { index in
-                    let tag = tagsToShow[index]
+                ForEach(0 ..< tags.count, id: \.self) { index in
+                    let tag = tags[index]
                     Image(systemName: bookmarkName)
                         .foregroundStyle(tag.color)
                         .symbolVariant(.fill)
@@ -57,23 +53,23 @@ struct SelectedTagsSummary<T: TagsSource>: View {
 
     @ViewBuilder
     var short: some View {
-        switch tagsToShow.count {
+        switch tags.count {
         case 0:
-            Label(tagsToShow.keyedLabelTitle, systemImage: bookmarkName)
+            Label(tags.keyedLabelTitle, systemImage: bookmarkName)
                 .foregroundStyle(.secondary)
         case 1:
-            Label(tagsToShow[0].name, systemImage: bookmarkName)
-                .foregroundStyle(tagsToShow[0].color)
+            Label(tags[0].name, systemImage: bookmarkName)
+                .foregroundStyle(tags[0].color)
                 .symbolVariant(.fill)
         default:
             
             Label {
-                Text(tagsToShow.keyedLabelTitle)
-                    .foregroundStyle(LinearGradient(colors: tagsToShow.map(\.color), startPoint: .leading, endPoint: .trailing))
+                Text(tags.keyedLabelTitle)
+                    .foregroundStyle(LinearGradient(colors: tags.map(\.color), startPoint: .leading, endPoint: .trailing))
             } icon: {
                 HStack(spacing: -13) {
-                    ForEach(0 ..< tagsToShow.count, id: \.self) { index in
-                        let tag = tagsToShow[index]
+                    ForEach(0 ..< tags.count, id: \.self) { index in
+                        let tag = tags[index]
                         Image(systemName: bookmarkName)
                             .foregroundStyle(tag.color)
                             .symbolVariant(.fill)
@@ -86,14 +82,14 @@ struct SelectedTagsSummary<T: TagsSource>: View {
 
     @ViewBuilder
     var long: some View {
-        switch tagsToShow.count {
+        switch tags.count {
         case 0, 1:
             short
         default:
             
             HStack {
-                ForEach(0 ..< tagsToShow.count, id: \.self) { index in
-                    let tag = tagsToShow[index]
+                ForEach(0 ..< tags.count, id: \.self) { index in
+                    let tag = tags[index]
                     Text(tag.name)
                         .foregroundStyle(tag.color)
                         .symbolVariant(.fill)
@@ -106,15 +102,15 @@ struct SelectedTagsSummary<T: TagsSource>: View {
 
     @ViewBuilder
     var longer: some View {
-        switch tagsToShow.count {
+        switch tags.count {
         case 0, 1:
             short
         default:
             
             Label {
                 HStack {
-                    ForEach(0 ..< tagsToShow.count, id: \.self) { index in
-                        let tag = tagsToShow[index]
+                    ForEach(0 ..< tags.count, id: \.self) { index in
+                        let tag = tags[index]
                         Text(tag.name)
                             .foregroundStyle(tag.color)
                             .symbolVariant(.fill)
@@ -132,14 +128,14 @@ struct SelectedTagsSummary<T: TagsSource>: View {
 
     @ViewBuilder
     var longest: some View {
-        switch tagsToShow.count {
+        switch tags.count {
         case 0, 1:
             short
         default:
             
             HStack {
-                ForEach(0 ..< tagsToShow.count, id: \.self) { index in
-                    let tag = tagsToShow[index]
+                ForEach(0 ..< tags.count, id: \.self) { index in
+                    let tag = tags[index]
                     Label(tag.name, systemImage: bookmarkName)
                         .foregroundStyle(tag.color)
                         .symbolVariant(.fill)
@@ -175,7 +171,7 @@ struct SelectedTagsSummary<T: TagsSource>: View {
             Text("\(tags.count) tags")
                 .font(.headline)
             HStack {
-                SelectedTagsSummary(tags: tags)
+                SelectedTagsSummary(tags: tags.tags)
                     .frame(width: width)
                     .padding(.bottom)
                     .debuggingBorder(.secondary.opacity(0.2))
@@ -183,7 +179,7 @@ struct SelectedTagsSummary<T: TagsSource>: View {
             }
         }
         
-        Slider(value: $width, in: 30 ... 300)
+        Slider(value: $width, in: 30 ... 400)
     }
     .padding()
     .frame(width: 400)
