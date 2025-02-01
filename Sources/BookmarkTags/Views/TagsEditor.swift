@@ -113,9 +113,17 @@ extension TagsEditor where T == ExampleTagsSource {
 }
 
 #Preview("Empty") {
-    TagsEditor.forTesting()
+    ScrollView {
+        TagsEditor.forTesting()
+    }
+    .frame(height: 400)
+    .reasonablySizedPreview()
 }
 
 #Preview("Has A Few") {
-    TagsEditor.forTesting(.hasAFew)
+    ScrollView {
+        TagsEditor.forTesting(.hasAFew)
+    }
+    .frame(height: 400)
+    .reasonablySizedPreview()
 }
