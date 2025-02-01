@@ -39,12 +39,22 @@ public struct TagsCursor {
     }
 }
 
-extension TagsCursor {
+//extension TagsCursor {
+//    var keyedLabelTitle: LocalizedStringKey {
+//        switch tags.count {
+//        case 0: "No Tags"
+//            // see https://nilcoalescing.com/blog/HandlePluralsInSwiftUITextViewsWithInflection/
+//        default: "^[\(tags.count) tag](inflect: true)"
+//        }
+//    }
+//}
+
+extension Array where Element == TagInfo {
     var keyedLabelTitle: LocalizedStringKey {
-        switch tags.count {
+        switch count {
         case 0: "No Tags"
             // see https://nilcoalescing.com/blog/HandlePluralsInSwiftUITextViewsWithInflection/
-        default: "^[\(tags.count) tag](inflect: true)"
+        default: "^[\(count) tag](inflect: true)"
         }
     }
 }

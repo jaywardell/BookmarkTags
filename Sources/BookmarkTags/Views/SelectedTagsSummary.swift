@@ -59,7 +59,7 @@ struct SelectedTagsSummary<T: TagsSource>: View {
     var short: some View {
         switch tagsToShow.count {
         case 0:
-            Label(tags.selected.keyedLabelTitle, systemImage: bookmarkName)
+            Label(tagsToShow.keyedLabelTitle, systemImage: bookmarkName)
                 .foregroundStyle(.secondary)
         case 1:
             Label(tagsToShow[0].name, systemImage: bookmarkName)
@@ -68,7 +68,7 @@ struct SelectedTagsSummary<T: TagsSource>: View {
         default:
             
             Label {
-                Text(tags.selected.keyedLabelTitle)
+                Text(tagsToShow.keyedLabelTitle)
                     .foregroundStyle(LinearGradient(colors: tagsToShow.map(\.color), startPoint: .leading, endPoint: .trailing))
             } icon: {
                 HStack(spacing: -13) {

@@ -27,7 +27,7 @@ public struct TagPickerToolbarButton<T: TagsSource>: View {
         
         switch tags.selected.tags.count {
         case 0:
-            Label(tags.selected.keyedLabelTitle, systemImage: "bookmark")
+            Label(tags.selected.tags.keyedLabelTitle, systemImage: "bookmark")
                 .foregroundStyle(.secondary)
         case 1:
             let tag = tags.selected.tags[0]
@@ -35,7 +35,7 @@ public struct TagPickerToolbarButton<T: TagsSource>: View {
                 .foregroundStyle(tag.color)
         default:
             Label {
-                Text(tags.selected.keyedLabelTitle)
+                Text(tags.selected.tags.keyedLabelTitle)
             } icon: {
                 // TODO: somehow present multiple bookmark icons
                 // but iOS doesn't seem to want to let me
