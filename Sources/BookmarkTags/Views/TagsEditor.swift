@@ -37,6 +37,8 @@ public struct TagsEditor<T: TagsSource>: View {
                         buttonAction: {
                             editingTag = tag
                         },
+                        // TODO: this doesn't seem to work in macOS
+                        // verify and decide if a workaround is needed
                         doubleTapAction: {
                             selectAndDismissEditing(tag)
                         }
