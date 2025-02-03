@@ -65,6 +65,7 @@ struct AddTagButton: View {
     }
     
     private func startEditing() {
+        guard !isEditing else { return }
         withAnimation {
             isEditing = true
         }
