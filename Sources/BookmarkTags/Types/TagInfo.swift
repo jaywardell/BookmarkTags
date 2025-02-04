@@ -10,10 +10,12 @@ import SwiftUI
 public struct TagInfo {
     public let name: String
     public let colorHue: CGFloat
+    public let id: UUID
     
-    public init(name: String, colorHue: CGFloat) {
+    public init(name: String, colorHue: CGFloat, id: UUID = UUID()) {
         self.name = name
         self.colorHue = colorHue
+        self.id = id
     }
     
     func color(for colorScheme: ColorScheme) -> Color {
@@ -38,6 +40,6 @@ public struct TagInfo {
 extension TagInfo: Equatable {}
 extension TagInfo: Hashable {}
 extension TagInfo: Sendable {}
-extension TagInfo: Identifiable {
-    public var id: String { name + String(Double(colorHue)) }
-}
+extension TagInfo: Identifiable {}
+//    public var id: String { name + String(Double(colorHue)) }
+//}
