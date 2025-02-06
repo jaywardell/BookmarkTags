@@ -83,7 +83,7 @@ public struct TagPickerToolbarButton<T: TagsSource>: View {
     }
 }
 
-#Preview("Has a Few") {
+#Preview("Can Pick Many") {
     @Previewable @State var predicate: TagsPredicateType = .allTags
     
     NavigationStack {
@@ -91,6 +91,21 @@ public struct TagPickerToolbarButton<T: TagsSource>: View {
             .toolbar {
                 TagPickerToolbarButton(tags: ExampleTagsSource.hasAFew,
                                        count: .many,
+                                        predicateType: $predicate)
+                    .labelStyle(.titleAndIcon)
+            }
+    }
+    .frame(width: 400, height: 200)
+}
+
+#Preview("Can Pick One") {
+    @Previewable @State var predicate: TagsPredicateType = .allTags
+    
+    NavigationStack {
+        Text("Hello")
+            .toolbar {
+                TagPickerToolbarButton(tags: ExampleTagsSource.hasAFew,
+                                       count: .one,
                                         predicateType: $predicate)
                     .labelStyle(.titleAndIcon)
             }
