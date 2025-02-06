@@ -74,6 +74,7 @@ public struct TagPickerToolbarButton<T: TagsSource>: View {
                     .navigationTitle(navtitle)
                 #endif
             }
+            .frame(width: 377, height: 377)
         }
     }
     
