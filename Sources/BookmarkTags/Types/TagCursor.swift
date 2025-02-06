@@ -52,7 +52,7 @@ public struct TagsCursor {
 extension Array where Element == TagInfo {
     var keyedLabelTitle: LocalizedStringKey {
         switch count {
-        case 0: "No Tags"
+        case 0: "Any Tags"
             // see https://nilcoalescing.com/blog/HandlePluralsInSwiftUITextViewsWithInflection/
         default: "^[\(count) tag](inflect: true)"
         }
