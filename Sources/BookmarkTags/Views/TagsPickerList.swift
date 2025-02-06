@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TagsPickerList<T: TagsSource>: View {
     
+    let maxTags: MaxTagsCount
     
     @ObservedObject var tags: T
     
@@ -16,9 +17,12 @@ struct TagsPickerList<T: TagsSource>: View {
     
     @Environment(\.dismiss) var dismiss
     
-    init(tags: T, predicateType: Binding<TagsPredicateType>) {
+    init(tags: T,
+         count: MaxTagsCount,
+         predicateType: Binding<TagsPredicateType>) {
         self.tags = tags
         self._predicateType = predicateType
+        self.maxTags = count
     }
     
     var body: some View {
@@ -61,7 +65,9 @@ struct ExampleTagsPickerListUI: View {
     @State private var predicateType: TagsPredicateType = .allTags
     
     var body: some View {
-        TagsPickerList(tags: tags, predicateType: $predicateType)
+        TagsPickerList(tags: tags,
+                       count: .many,
+                       predicateType: $predicateType)
 
     }
 }

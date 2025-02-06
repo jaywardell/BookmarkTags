@@ -9,6 +9,8 @@ import SwiftUI
 
 public struct TagPickerToolbarButton<T: TagsSource>: View {
     
+    let maxTags: MaxTagsCount
+    
     @ObservedObject var tags: T
 
     @Binding private var predicateType: TagsPredicateType
@@ -18,10 +20,12 @@ public struct TagPickerToolbarButton<T: TagsSource>: View {
 
     public init(
         tags: T,
+        count: MaxTagsCount,
         predicateType: Binding<TagsPredicateType>
     ) {
         self.tags = tags
         self._predicateType = predicateType
+        self.maxTags = count
     }
                 
     @ViewBuilder
@@ -61,7 +65,9 @@ public struct TagPickerToolbarButton<T: TagsSource>: View {
         .onTapGesture(perform: showPicker)
         .popover(isPresented: $showingPopover) {
             NavigationStack {
-                TagsPickerList(tags: tags, predicateType: $predicateType)
+                TagsPickerList(tags: tags,
+                               count: maxTags,
+                               predicateType: $predicateType)
                 #if canImport(UIKit)
                     .navigationBarTitle(navtitle, displayMode: .inline)
                 #elseif canImport(AppKit)
@@ -82,7 +88,9 @@ public struct TagPickerToolbarButton<T: TagsSource>: View {
     NavigationStack {
         Text("Hello")
             .toolbar {
-                TagPickerToolbarButton(tags: ExampleTagsSource.hasAFew, predicateType: $predicate)
+                TagPickerToolbarButton(tags: ExampleTagsSource.hasAFew,
+                                       count: .many,
+                                        predicateType: $predicate)
                     .labelStyle(.titleAndIcon)
             }
     }
