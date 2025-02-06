@@ -29,16 +29,18 @@ struct TagsPickerList<T: TagsSource>: View {
         
         ScrollView {
             
-            HStack {
-                Text("Bookmarks matching:")
-                Picker("Type of Search", selection: $predicateType) {
-                    ForEach(TagsPredicateType.allCases) { type in
-                        Text(type.displayName)
+            if case .many = maxTags {
+                HStack {
+                    Text("Bookmarks matching:")
+                    Picker("Type of Search", selection: $predicateType) {
+                        ForEach(TagsPredicateType.allCases) { type in
+                            Text(type.displayName)
+                        }
                     }
+                    Spacer()
                 }
-                Spacer()
+                .padding(.horizontal)
             }
-            .padding(.horizontal)
 
             ForEach(tags.tags) { tag in
                 TagToggle(
@@ -46,6 +48,13 @@ struct TagsPickerList<T: TagsSource>: View {
                     .trailing,
                     isSelected: tags.selectedBinding(for: tag),
                     fullsize: true)
+                .onChange(of: tags.selectedBinding(for: tag).wrappedValue) { oldValue, newValue in
+                    guard case .one = maxTags else { return }
+                    
+                    if newValue {
+                        deselectAll(except: tag)
+                    }
+                }
                 
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -54,6 +63,13 @@ struct TagsPickerList<T: TagsSource>: View {
             Button("Done") {
                 dismiss()
             }
+        }
+    }
+    
+    private func deselectAll(except toSelect: TagInfo) {
+        for tag in tags.selected.tags {
+            guard tag != toSelect else { continue }
+            try? tags.toggleSelection(for: tag)
         }
     }
 }
@@ -65,6 +81,18 @@ struct TagsPickerList<T: TagsSource>: View {
     NavigationStack {
         TagsPickerList(tags: ExampleTagsSource.hasAFew,
                        count: .many,
+                       predicateType: $predicateType)
+    }
+    .reasonablySizedPreview()
+}
+
+#Preview("Select One") {
+    
+    @Previewable @State var predicateType: TagsPredicateType = .allTags
+    
+    NavigationStack {
+        TagsPickerList(tags: ExampleTagsSource.hasAFew,
+                       count: .one,
                        predicateType: $predicateType)
     }
     .reasonablySizedPreview()
