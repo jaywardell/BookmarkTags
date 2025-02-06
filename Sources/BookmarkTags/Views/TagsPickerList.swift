@@ -58,22 +58,14 @@ struct TagsPickerList<T: TagsSource>: View {
     }
 }
 
-struct ExampleTagsPickerListUI: View {
+#Preview("Select Many") {
     
-    let tags = ExampleTagsSource.hasAFew
+    @Previewable @State var predicateType: TagsPredicateType = .allTags
     
-    @State private var predicateType: TagsPredicateType = .allTags
-    
-    var body: some View {
-        TagsPickerList(tags: tags,
+    NavigationStack {
+        TagsPickerList(tags: ExampleTagsSource.hasAFew,
                        count: .many,
                        predicateType: $predicateType)
-
     }
-}
-
-#Preview {
-    NavigationStack {
-        ExampleTagsPickerListUI()
-    }
+    .reasonablySizedPreview()
 }
