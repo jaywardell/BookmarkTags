@@ -52,6 +52,8 @@ struct TitledTagButton: View {
     }
 }
 
+#if DEBUG
+
 #Preview {
     VStack {
         Spacer()
@@ -66,3 +68,4 @@ struct TitledTagButton: View {
         Spacer()
     }
 }
+#endif

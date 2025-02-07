@@ -34,6 +34,8 @@ struct TagDisplay: View {
     }
 }
 
+#if DEBUG
+
 #Preview {
         
     VStack {
@@ -57,3 +59,4 @@ struct TagDisplay: View {
     }
     .reasonablySizedPreview()
 }
+#endif

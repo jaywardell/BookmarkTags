@@ -176,7 +176,10 @@ fileprivate struct Example: View {
         }
     }
 }
+
+#if DEBUG
 #Preview {
     Example()
         .widerPreview()
 }
+#endif

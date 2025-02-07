@@ -210,7 +210,10 @@ struct TagEditor: View {
     }
 }
 
+#if DEBUG
+
 #Preview {
     TagEditor(tagInfo: TagInfo(name: "hello", colorHue: 195/360), showComparison: true) { _, _ in } delete: { _ in }
         .widerPreview()
 }
+#endif

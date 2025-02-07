@@ -93,7 +93,7 @@ struct AddTagButton: View {
 }
 
 
-
+#if DEBUG
 #Preview {
     VStack {
         Spacer()
@@ -118,3 +118,4 @@ struct AddTagButton: View {
     }
     .reasonablySizedPreview()
 }
+#endif

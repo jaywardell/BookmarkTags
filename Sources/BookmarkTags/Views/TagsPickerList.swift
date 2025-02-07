@@ -74,6 +74,8 @@ struct TagsPickerList<T: TagsSource>: View {
     }
 }
 
+#if DEBUG
+
 #Preview("Select Many") {
     
     @Previewable @State var predicateType: TagsPredicateType = .allTags
@@ -97,3 +99,4 @@ struct TagsPickerList<T: TagsSource>: View {
     }
     .reasonablySizedPreview()
 }
+#endif

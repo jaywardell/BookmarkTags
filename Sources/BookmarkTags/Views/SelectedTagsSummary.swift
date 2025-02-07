@@ -159,6 +159,8 @@ struct SelectedTagsSummary: View {
     }
 }
 
+#if DEBUG
+
 #Preview {
     
     @Previewable @State var width: CGFloat = 200
@@ -182,3 +184,4 @@ struct SelectedTagsSummary: View {
     .padding()
     .frame(width: 400)
 }
+#endif

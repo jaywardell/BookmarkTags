@@ -83,6 +83,8 @@ public struct TagPickerToolbarButton<T: TagsSource>: View {
     }
 }
 
+#if DEBUG
+
 #Preview("Can Pick Many") {
     @Previewable @State var predicate: TagsPredicateType = .allTags
     
@@ -112,3 +114,4 @@ public struct TagPickerToolbarButton<T: TagsSource>: View {
     }
     .frame(width: 400, height: 200)
 }
+#endif

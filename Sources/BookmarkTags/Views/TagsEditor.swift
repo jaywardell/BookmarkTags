@@ -114,6 +114,8 @@ extension TagsEditor where T == ExampleTagsSource {
     }
 }
 
+#if DEBUG
+
 #Preview("Empty") {
     ScrollView {
         TagsEditor.forTesting()
@@ -129,3 +131,4 @@ extension TagsEditor where T == ExampleTagsSource {
     .frame(height: 400)
     .reasonablySizedPreview()
 }
+#endif
