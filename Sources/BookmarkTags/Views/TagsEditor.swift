@@ -108,13 +108,14 @@ public struct TagsEditor<T: TagsSource>: View {
     }
 }
 
+#if DEBUG
+
 extension TagsEditor where T == ExampleTagsSource {
     static func forTesting(_ source: ExampleTagsSource = .empty) -> TagsEditor {
         TagsEditor(tags: source)
     }
 }
 
-#if DEBUG
 
 #Preview("Empty") {
     ScrollView {
