@@ -8,7 +8,7 @@
 import SwiftUICore
 
 public struct TagsCursor {
-    let tags: [TagInfo]
+    public let tags: [TagInfo]
     
     public var isEmpty: Bool { tags.isEmpty }
     
