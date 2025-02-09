@@ -20,6 +20,10 @@ public struct TagsEditor<T: TagsSource>: View {
     
     @Namespace private var animation
     
+    #if canImport(UIKit)
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    #endif
+
     public init(tags: T) {
         self.tags = tags
     }
@@ -85,9 +89,9 @@ public struct TagsEditor<T: TagsSource>: View {
         .popover(item: $editingTag) { tagInfo in
             TagEditor(
                 tagInfo: tagInfo,
-                hideNavigationBarTitle: true,
-                flowButtonsInToolbar: false,
-                showComparison: true,
+                hideNavigationBarTitle: tagEditorShouldShowTitle,
+                flowButtonsInToolbar: tagEditorShouldShowFlowButtonsInToolbar,
+                showComparison: tagEditorShouldShowComparison,
                 convert: { oldValue, newValue in
                     print("will replace \(oldValue) with \(newValue)")
                     try? self.tags.replace(tagInfo, with: newValue)
@@ -101,6 +105,30 @@ public struct TagsEditor<T: TagsSource>: View {
         
     }
     
+    private var tagEditorShouldShowComparison: Bool {
+        #if os(macOS)
+        false
+        #else
+        horizontalSizeClass == .compact
+        #endif
+    }
+    
+    private var tagEditorShouldShowTitle: Bool {
+        #if os(macOS)
+        false
+        #else
+        horizontalSizeClass == .compact
+        #endif
+    }
+
+    private var tagEditorShouldShowFlowButtonsInToolbar: Bool {
+        #if os(macOS)
+        true
+        #else
+        horizontalSizeClass == .regular
+        #endif
+    }
+
     private func beginEditing() {
         withAnimation {
             isEditing = true
