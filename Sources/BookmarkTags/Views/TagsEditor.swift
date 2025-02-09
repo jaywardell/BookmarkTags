@@ -115,7 +115,7 @@ public struct TagsEditor<T: TagsSource>: View {
     
     private var tagEditorShouldShowTitle: Bool {
         #if os(macOS)
-        false
+        true
         #else
         horizontalSizeClass == .compact
         #endif
@@ -125,7 +125,7 @@ public struct TagsEditor<T: TagsSource>: View {
         #if os(macOS)
         false // buttons don't show up in toolbar on macOS
         #else
-        horizontalSizeClass == .compact
+        true
         #endif
     }
 
