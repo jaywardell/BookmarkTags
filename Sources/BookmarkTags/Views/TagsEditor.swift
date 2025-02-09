@@ -89,7 +89,7 @@ public struct TagsEditor<T: TagsSource>: View {
         .popover(item: $editingTag) { tagInfo in
             TagEditor(
                 tagInfo: tagInfo,
-                hideNavigationBarTitle: tagEditorShouldShowTitle,
+                hideNavigationBarTitle: !tagEditorShouldShowTitle,
                 flowButtonsInToolbar: tagEditorShouldShowFlowButtonsInToolbar,
                 showComparison: tagEditorShouldShowComparison,
                 convert: { oldValue, newValue in
@@ -125,7 +125,7 @@ public struct TagsEditor<T: TagsSource>: View {
         #if os(macOS)
         false // buttons don't show up in toolbar on macOS
         #else
-        horizontalSizeClass == .regular
+        horizontalSizeClass == .compact
         #endif
     }
 
