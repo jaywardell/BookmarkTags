@@ -15,6 +15,7 @@ public struct TagsEditor<T: TagsSource>: View {
     @ObservedObject var tags: T
     
     @State private var isEditing = false
+    @State private var tagOpacity: CGFloat = 0
     @State private var editingTag: TagInfo?
     
     @Namespace private var animation
@@ -43,6 +44,7 @@ public struct TagsEditor<T: TagsSource>: View {
                             selectAndDismissEditing(tag)
                         }
                     )
+                    .opacity(max(tags.selectedBinding(for: tag).wrappedValue ? 1 : 0, tagOpacity))
                     .frame(maxWidth: .infinity, alignment: .trailing)
                     .matchedGeometryEffect(id: tag.id, in: animation)
                 }
@@ -59,7 +61,8 @@ public struct TagsEditor<T: TagsSource>: View {
                 AddTagButton(bookmarkedEdge: .leading) { try? tags.addTag(named:$0) }
                     .frame(maxWidth: .infinity, alignment: .trailing)
                     .matchedGeometryEffect(id: "add", in: animation)
-                
+                    .opacity(tagOpacity)
+
                 TitledTagButton("Done", .leading, action: finishEditing)
                     .frame(maxWidth: .infinity, alignment: .trailing)
                     .matchedGeometryEffect(id: "editing", in: animation)
@@ -95,11 +98,21 @@ public struct TagsEditor<T: TagsSource>: View {
     }
     
     private func beginEditing() {
-        isEditing = true
+        withAnimation {
+            isEditing = true
+        } completion: {
+            withAnimation {
+                tagOpacity = 1
+            }
+        }
     }
 
     private func finishEditing() {
-        isEditing = false
+        withAnimation {
+            tagOpacity = 0
+        } completion: {
+            isEditing = false
+        }
     }
     
     private func selectAndDismissEditing(_ tag: TagInfo) {
