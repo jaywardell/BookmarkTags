@@ -157,10 +157,13 @@ struct TagEditor: View {
                 if flowButtonsInToolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         cancelButton
+                            .keyboardShortcut(.escape)
                     }
                     
                     ToolbarItem(placement: .primaryAction) {
                         doneButton
+                            .keyboardShortcut(.return)
+                            .bold()
                     }
                 }
             }
