@@ -152,7 +152,10 @@ struct TagEditor: View {
                 .buttonBorderShape(.roundedRectangle)
             }
             .frame(minWidth: 377)
-            .navigationTitle(hideNavigationBarTitle ? "" : "Edit Tag" + (showComparison ? "" : " \(tagInfo.name)"))
+            .navigationTitle(hideNavigationBarTitle ? "" : "Edit Tag" + (showComparison ? "" : " \"\(tagInfo.name)\""))
+            #if canImport(UIKit)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
             .toolbar {
                 if flowButtonsInToolbar {
                     ToolbarItem(placement: .cancellationAction) {
