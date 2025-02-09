@@ -78,6 +78,10 @@ public struct TagsEditor<T: TagsSource>: View {
         .frame(maxWidth: .infinity)
         .animation(.easeInOut, value: isEditing)
         .animation(.easeInOut, value: tags.tags)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            isEditing = false
+        }
         .popover(item: $editingTag) { tagInfo in
             TagEditor(
                 tagInfo: tagInfo,
