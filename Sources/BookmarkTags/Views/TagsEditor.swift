@@ -123,7 +123,7 @@ public struct TagsEditor<T: TagsSource>: View {
 
     private var tagEditorShouldShowFlowButtonsInToolbar: Bool {
         #if os(macOS)
-        true
+        false // buttons don't show up in toolbar on macOS
         #else
         horizontalSizeClass == .regular
         #endif
