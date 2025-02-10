@@ -73,6 +73,7 @@ public struct TagPickerToolbarButton<T: TagsSource>: View {
                 #elseif canImport(AppKit)
                     .navigationTitle(navtitle)
                 #endif
+                    .presentationDetents([.medium, .large])
             }
             .frame(minWidth: 377, minHeight: 377)
         }
