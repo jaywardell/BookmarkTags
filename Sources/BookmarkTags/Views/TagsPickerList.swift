@@ -48,6 +48,10 @@ struct TagsPickerList<T: TagsSource>: View {
                     .trailing,
                     isSelected: tags.selectedBinding(for: tag),
                     fullsize: true)
+                .onTapGesture(count: 2) {
+                    try? tags.toggleSelection(for: tag)
+                    dismiss()
+                }
                 .onChange(of: tags.selectedBinding(for: tag).wrappedValue) { oldValue, newValue in
                     guard case .one = maxTags else { return }
                     
