@@ -48,7 +48,7 @@ public struct TagsEditor<T: TagsSource>: View {
                             selectAndDismissEditing(tag)
                         }
                     )
-                    .opacity(max(tags.selectedBinding(for: tag).wrappedValue ? 1 : 0, tagOpacity))
+                    .opacity(max(tags.selectedBinding(for: tag).wrappedValue ? 1 : 5/34, tagOpacity))
                     .frame(maxWidth: .infinity, alignment: .trailing)
                     .matchedGeometryEffect(id: tag.id, in: animation)
                 }
@@ -133,14 +133,14 @@ public struct TagsEditor<T: TagsSource>: View {
         withAnimation {
             isEditing = true
         } completion: {
-            withAnimation {
+            withAnimation(.easeIn) {
                 tagOpacity = 1
             }
         }
     }
 
     private func finishEditing() {
-        withAnimation {
+        withAnimation(.easeIn) {
             tagOpacity = 0
         } completion: {
             isEditing = false
