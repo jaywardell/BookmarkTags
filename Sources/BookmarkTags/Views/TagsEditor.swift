@@ -9,6 +9,54 @@ import SwiftUI
 import Observation
 import VisualDebugging
 
+struct TagEditorToggle<T: TagsSource> : View {
+    
+    let tag: TagInfo
+    @ObservedObject var tags: T
+    
+    let tagEditorShouldShowTitle: Bool
+    let tagEditorShouldShowFlowButtonsInToolbar: Bool
+    let tagEditorShouldShowComparison: Bool
+
+    let doubleTapAction: (TagInfo) -> Void
+
+    @State private var showingPopover = false
+    
+    var body: some View {
+        TagToggle(
+            tag,
+            .leading,
+            isSelected: tags.selectedBinding(for: tag),
+            buttonImageName: "info.circle",
+            buttonTitle: "Edit Tag \(tag.name)",
+            buttonAction: {
+                showingPopover = true
+            },
+            // TODO: this doesn't seem to work in macOS
+            // verify and decide if a workaround is needed
+            doubleTapAction: {
+                doubleTapAction(tag)
+            }
+        )
+        .popover(isPresented: $showingPopover) {
+            TagEditor(
+                tagInfo: tag,
+                hideNavigationBarTitle: !tagEditorShouldShowTitle,
+                flowButtonsInToolbar: tagEditorShouldShowFlowButtonsInToolbar,
+                showComparison: tagEditorShouldShowComparison,
+                convert: { oldValue, newValue in
+                    print("will replace \(oldValue) with \(newValue)")
+                    try? self.tags.replace(tag, with: newValue)
+                },
+                delete: { tag in
+                    try? tags.delete(tag)
+                }
+            )
+            .presentationDetents([.medium])
+        }
+
+    }
+}
 
 public struct TagsEditor<T: TagsSource>: View {
     
@@ -33,21 +81,9 @@ public struct TagsEditor<T: TagsSource>: View {
             
             if isEditing {
                 ForEach(tags.tags) { tag in
-                    TagToggle(
-                        tag,
-                        .leading,
-                        isSelected: tags.selectedBinding(for: tag),
-                        buttonImageName: "info.circle",
-                        buttonTitle: "Edit Tag \(tag.name)",
-                        buttonAction: {
-                            editingTag = tag
-                        },
-                        // TODO: this doesn't seem to work in macOS
-                        // verify and decide if a workaround is needed
-                        doubleTapAction: {
-                            selectAndDismissEditing(tag)
-                        }
-                    )
+                    TagEditorToggle(tag: tag, tags: tags, tagEditorShouldShowTitle: tagEditorShouldShowTitle, tagEditorShouldShowFlowButtonsInToolbar: tagEditorShouldShowFlowButtonsInToolbar, tagEditorShouldShowComparison: tagEditorShouldShowComparison) {
+                        selectAndDismissEditing($0)
+                    }
                     .opacity(max(tags.selectedBinding(for: tag).wrappedValue ? 1 : 5/34, tagOpacity))
                     .frame(maxWidth: .infinity, alignment: .trailing)
                     .matchedGeometryEffect(id: tag.id, in: animation)
@@ -86,23 +122,6 @@ public struct TagsEditor<T: TagsSource>: View {
         .onTapGesture {
             finishEditing()
         }
-        .popover(item: $editingTag) { tagInfo in
-            TagEditor(
-                tagInfo: tagInfo,
-                hideNavigationBarTitle: !tagEditorShouldShowTitle,
-                flowButtonsInToolbar: tagEditorShouldShowFlowButtonsInToolbar,
-                showComparison: tagEditorShouldShowComparison,
-                convert: { oldValue, newValue in
-                    print("will replace \(oldValue) with \(newValue)")
-                    try? self.tags.replace(tagInfo, with: newValue)
-                },
-                delete: { tag in
-                    try? tags.delete(tag)
-                }
-            )
-            .presentationDetents([.medium])
-        }
-        
     }
     
     private var tagEditorShouldShowComparison: Bool {
