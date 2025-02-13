@@ -120,6 +120,10 @@ struct TagEditor: View {
                 
                 VStack {
                     
+                    if horizontalSizeClass == .regular {
+                        Spacer()
+                    }
+                    
                     Button(role: .destructive, action: deleteButtonTapepd) {
                         Label("Delete", systemImage: "trash")
                             .frame(maxWidth: .infinity)
