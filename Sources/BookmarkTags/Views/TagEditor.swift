@@ -21,6 +21,7 @@ struct TagEditor: View {
     @State private var showingDeleteAlert = false
     
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     private var newTagInfo: TagInfo {
         .init(name: newName, colorHue: newColorHue)
@@ -152,6 +153,10 @@ struct TagEditor: View {
                 .buttonBorderShape(.roundedRectangle)
             }
             .frame(minWidth: 377)
+            .frame(
+                width: horizontalSizeClass == .regular ? 377 : nil,
+                height: horizontalSizeClass == .regular ? 233 : nil
+            )
             .navigationTitle(hideNavigationBarTitle ? "" : "Edit Tag" + (showComparison ? "" : " \"\(tagInfo.name)\""))
             #if canImport(UIKit)
             .navigationBarTitleDisplayMode(.inline)
