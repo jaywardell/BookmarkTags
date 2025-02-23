@@ -30,16 +30,26 @@ struct TagsPickerList<T: TagsSource>: View {
         ScrollView {
             
             if case .many = maxTags {
-                HStack {
-                    Text("Bookmarks matching:")
-                    Picker("Type of Search", selection: $predicateType) {
-                        ForEach(TagsPredicateType.allCases) { type in
-                            Text(type.displayName)
+                VStack(alignment: .leading) {
+                    // I don't think I want this explaantory text,
+                    // but I'll leave it here just in case for now
+//                    HStack {
+//                        Text("Match")
+                        Picker("Type of Search", selection: $predicateType) {
+                            ForEach(TagsPredicateType.allCases) { type in
+                                Text(type.displayName)
+                            }
                         }
-                    }
-                    Spacer()
+                        .pickerStyle(.segmented)
+                        Spacer()
+//                    }
+//                    .padding(.horizontal)
+//                    Text("bookmarks with the tags")
                 }
+                .font(.headline)
+                .padding(.bottom)
                 .padding(.horizontal)
+                .opacity(tags.selected.tags.count > 1 ? 1 : 0)
             }
 
             ForEach(tags.tags) { tag in
