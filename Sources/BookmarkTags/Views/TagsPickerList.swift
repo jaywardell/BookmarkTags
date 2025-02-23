@@ -78,6 +78,7 @@ struct TagsPickerList<T: TagsSource>: View {
                 dismiss()
             }
         }
+        .animation(.easeInOut, value: tags.selected.tags)
     }
     
     private func deselectAll(except toSelect: TagInfo) {
