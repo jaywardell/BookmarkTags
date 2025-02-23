@@ -33,7 +33,7 @@ public struct TagPickerToolbarButton<T: TagsSource>: View {
         
         switch tags.selected.tags.count {
         case 0:
-            Label(tags.selected.tags.keyedLabelTitle, systemImage: "bookmark")
+            Label(tags.selected.tags.keyedLabelTitle(), systemImage: "bookmark")
                 .foregroundStyle(.secondary)
         case 1:
             let tag = tags.selected.tags[0]
@@ -43,7 +43,9 @@ public struct TagPickerToolbarButton<T: TagsSource>: View {
 
         default:
             Label {
-                Text(tags.selected.tags.keyedLabelTitle)
+                Text(tags.selected.tags.keyedLabelTitle(for: predicateType))
+//                (Text(predicateType == .anyTag ? "Any Of " : "") +
+//                Text(tags.selected.tags.keyedLabelTitle))
                     .foregroundStyle(LinearGradient(colors: tags.selected.tags.map { $0.color(for: colorScheme) }, startPoint: .leading, endPoint: .trailing))
             } icon: {
                 // I can't show multiple bookmark iamges,

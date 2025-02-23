@@ -50,11 +50,13 @@ public struct TagsCursor {
 //}
 
 extension Array where Element == TagInfo {
-    var keyedLabelTitle: LocalizedStringKey {
+    func keyedLabelTitle(for predicateType: TagsPredicateType? = nil) -> LocalizedStringKey {
+
         switch count {
         case 0: "Any Tags"
             // see https://nilcoalescing.com/blog/HandlePluralsInSwiftUITextViewsWithInflection/
-        default: "^[\(count) Tag](inflect: true)"
+            // TODO: for english, use "Either of" for 2 choices
+        default: "\(predicateType == .anyTag ? "Any of " : "")^[\(count) Tag](inflect: true)"
         }
     }
 }

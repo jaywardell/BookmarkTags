@@ -52,7 +52,7 @@ struct SelectedTagsSummary: View {
     var short: some View {
         switch tags.count {
         case 0:
-            Label(tags.keyedLabelTitle, systemImage: bookmarkName)
+            Label(tags.keyedLabelTitle(), systemImage: bookmarkName)
                 .foregroundStyle(.secondary)
         case 1:
             Label(tags[0].name, systemImage: bookmarkName)
@@ -61,7 +61,8 @@ struct SelectedTagsSummary: View {
         default:
             
             Label {
-                Text(tags.keyedLabelTitle)
+                // TODO: pass in predicateType
+                Text(tags.keyedLabelTitle())
                     .foregroundStyle(LinearGradient(colors: tags.map { $0.color(for: colorScheme) }, startPoint: .leading, endPoint: .trailing))
             } icon: {
                 HStack(spacing: -13) {
