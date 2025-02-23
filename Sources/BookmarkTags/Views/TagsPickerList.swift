@@ -47,8 +47,9 @@ struct TagsPickerList<T: TagsSource>: View {
 //                    Text("bookmarks with the tags")
                 }
                 .font(.headline)
-                .padding(.bottom)
-                .padding(.horizontal)
+                .padding()
+//                .padding(.bottom)
+//                .padding(.horizontal)
                 .opacity(tags.selected.tags.count > 1 ? 1 : 0)
             }
 
