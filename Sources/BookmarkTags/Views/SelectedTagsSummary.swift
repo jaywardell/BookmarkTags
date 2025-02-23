@@ -16,6 +16,24 @@ struct SelectedTagsSummary: View {
 
     @Environment(\.colorScheme) var colorScheme
     
+    private var gradientBookmark: some View {
+        GradientColoredImage(systemImageName: bookmarkName, colors: tags.map { $0.color(for: colorScheme) })
+            .symbolVariant(.fill)
+    }
+    
+    private var stackedBookmarks: some View {
+        HStack(spacing: -13) {
+            ForEach(0 ..< tags.count, id: \.self) { index in
+                let tag = tags[index]
+                Image(systemName: bookmarkName)
+                    .foregroundStyle(tag.color(for: colorScheme))
+                    .symbolVariant(.fill)
+                    .zIndex(Double(-index))
+            }
+        }
+    }
+
+    
     @ViewBuilder
     var shortest: some View {
         switch tags.count {
@@ -24,8 +42,7 @@ struct SelectedTagsSummary: View {
                 .foregroundStyle(.secondary)
 
         default:
-            GradientColoredImage(systemImageName: bookmarkName, colors: tags.map { $0.color(for: colorScheme) })
-                .symbolVariant(.fill)
+            gradientBookmark
         }
     }
 
@@ -66,19 +83,11 @@ struct SelectedTagsSummary: View {
                 Text(tags.keyedLabelTitle(for: predicate))
                     .foregroundStyle(LinearGradient(colors: tags.map { $0.color(for: colorScheme) }, startPoint: .leading, endPoint: .trailing))
             } icon: {
-                HStack(spacing: -13) {
-                    ForEach(0 ..< tags.count, id: \.self) { index in
-                        let tag = tags[index]
-                        Image(systemName: bookmarkName)
-                            .foregroundStyle(tag.color(for: colorScheme))
-                            .symbolVariant(.fill)
-                            .zIndex(Double(-index))
-                    }
-                }
+                stackedBookmarks
             }
         }
     }
-
+    
     @ViewBuilder
     var long: some View {
         switch tags.count {
@@ -124,8 +133,7 @@ struct SelectedTagsSummary: View {
                 .lineLimit(1)
                 .multilineTextAlignment(.leading)
             } icon: {
-                GradientColoredImage(systemImageName: bookmarkName, colors: tags.map { $0.color(for: colorScheme) })
-                    .symbolVariant(.fill)
+                gradientBookmark
             }
 
             
@@ -138,21 +146,24 @@ struct SelectedTagsSummary: View {
         case 0, 1:
             short
         default:
-            
-            HStack {
-                ForEach(0 ..< tags.count, id: \.self) { index in
-                    let tag = tags[index]
- 
-                    concaterator(index, in: tags.count)
+  
+            Label {
+                HStack {
+                    ForEach(0 ..< tags.count, id: \.self) { index in
+                        let tag = tags[index]
+                        
+                        concaterator(index, in: tags.count)
 
-                    Label(labelName(for: tag, at: index, of: tags.count),
-                          systemImage: bookmarkName)
-                        .foregroundStyle(tag.color(for: colorScheme))
-                        .symbolVariant(.fill)
+                        Text(labelName(for: tag, at: index, of: tags.count))
+                            .foregroundStyle(tag.color(for: colorScheme))
+                            .symbolVariant(.fill)
+                    }
                 }
+                .lineLimit(1)
+                .multilineTextAlignment(.leading)
+            } icon: {
+                stackedBookmarks
             }
-            .lineLimit(1)
-            .multilineTextAlignment(.leading)
         }
     }
     
