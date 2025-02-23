@@ -33,6 +33,17 @@ struct SelectedTagsSummary: View {
         }
     }
 
+    private var sideBySideBookmarks: some View {
+        HStack(spacing: 0) {
+            
+            ForEach(0 ..< tags.count, id: \.self) { index in
+                let tag = tags[index]
+                Image(systemName: bookmarkName)
+                    .foregroundStyle(tag.color(for: colorScheme))
+                    .symbolVariant(.fill)
+            }
+        }
+    }
     
     @ViewBuilder
     var shortest: some View {
@@ -55,14 +66,7 @@ struct SelectedTagsSummary: View {
                 .foregroundStyle(.secondary)
 
         default:
-            HStack(spacing: 0) {
-                ForEach(0 ..< tags.count, id: \.self) { index in
-                    let tag = tags[index]
-                    Image(systemName: bookmarkName)
-                        .foregroundStyle(tag.color(for: colorScheme))
-                        .symbolVariant(.fill)
-                }
-            }
+            sideBySideBookmarks
         }
     }
 
@@ -180,6 +184,10 @@ struct SelectedTagsSummary: View {
     }
     
     var body: some View {
+        // TODO: I could probably refaactor this
+        // so that it's just a Label containing 2 ViewThatFits
+        // one for image and one for title
+        // TODO: different font weights for tag name vs concatenator string
         HStack {
             ViewThatFits {
                 longest
