@@ -15,8 +15,8 @@ public enum TagsPredicateType: CaseIterable, Identifiable {
     
     var displayName: LocalizedStringKey {
         switch self {
-        case .allTags: "all tags"
-        case .anyTag: "any tag"
+        case .allTags: "All"
+        case .anyTag: "Any"
         }
     }
 }
