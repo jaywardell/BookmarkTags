@@ -19,4 +19,11 @@ public enum TagsPredicateType: CaseIterable, Identifiable {
         case .anyTag: "Any"
         }
     }
+    
+    var concatenator: LocalizedStringKey {
+        switch self {
+        case .allTags: "and"
+        case .anyTag: "or"
+        }
+    }
 }

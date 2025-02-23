@@ -10,6 +10,7 @@ import SwiftUI
 struct SelectedTagsSummary: View {
     
     let tags: [TagInfo]
+    let predicate: TagsPredicateType
 
     private var bookmarkName: String { "bookmark" }
 
@@ -62,7 +63,7 @@ struct SelectedTagsSummary: View {
             
             Label {
                 // TODO: pass in predicateType
-                Text(tags.keyedLabelTitle())
+                Text(tags.keyedLabelTitle(for: predicate))
                     .foregroundStyle(LinearGradient(colors: tags.map { $0.color(for: colorScheme) }, startPoint: .leading, endPoint: .trailing))
             } icon: {
                 HStack(spacing: -13) {
@@ -88,7 +89,10 @@ struct SelectedTagsSummary: View {
             HStack {
                 ForEach(0 ..< tags.count, id: \.self) { index in
                     let tag = tags[index]
-                    Text(tag.name)
+                    
+                    concaterator(index, in: tags.count)
+
+                    Text(labelName(for: tag, at: index, of: tags.count))
                         .foregroundStyle(tag.color(for: colorScheme))
                         .symbolVariant(.fill)
                 }
@@ -109,7 +113,10 @@ struct SelectedTagsSummary: View {
                 HStack {
                     ForEach(0 ..< tags.count, id: \.self) { index in
                         let tag = tags[index]
-                        Text(tag.name)
+                        
+                        concaterator(index, in: tags.count)
+
+                        Text(labelName(for: tag, at: index, of: tags.count))
                             .foregroundStyle(tag.color(for: colorScheme))
                             .symbolVariant(.fill)
                     }
@@ -135,7 +142,11 @@ struct SelectedTagsSummary: View {
             HStack {
                 ForEach(0 ..< tags.count, id: \.self) { index in
                     let tag = tags[index]
-                    Label(tag.name, systemImage: bookmarkName)
+ 
+                    concaterator(index, in: tags.count)
+
+                    Label(labelName(for: tag, at: index, of: tags.count),
+                          systemImage: bookmarkName)
                         .foregroundStyle(tag.color(for: colorScheme))
                         .symbolVariant(.fill)
                 }
@@ -144,7 +155,19 @@ struct SelectedTagsSummary: View {
             .multilineTextAlignment(.leading)
         }
     }
+    
+    @ViewBuilder
+    private func concaterator(_ index: Int, in count: Int) -> some View {
+        if index == count - 1 {
+            Text(predicate.concatenator)
+                .foregroundStyle(.secondary)
+        }
+    }
 
+    private func labelName(for tag: TagInfo, at index: Int, of count: Int) -> String {
+        tag.name + (index < count - 2 ? ", " : "")
+    }
+    
     var body: some View {
         HStack {
             ViewThatFits {
@@ -165,14 +188,15 @@ struct SelectedTagsSummary: View {
 #Preview {
     
     @Previewable @State var width: CGFloat = 200
-    
+    @Previewable @State var predicate = TagsPredicateType.allTags
+
     VStack(alignment: .leading) {
         ForEach(0 ..< ExampleTagsSource.examples.count, id: \.self) { index in
             let tags = ExampleTagsSource.examples[index]
             Text("\(tags.count) tags")
                 .font(.headline)
             HStack {
-                SelectedTagsSummary(tags: tags.tags)
+                SelectedTagsSummary(tags: tags.tags, predicate: predicate)
                     .frame(width: width)
                     .padding(.bottom)
                     .debuggingBorder(.secondary.opacity(0.2))
@@ -181,6 +205,12 @@ struct SelectedTagsSummary: View {
         }
         
         Slider(value: $width, in: 30 ... 400)
+        Picker("Predicate", selection: $predicate) {
+            ForEach(TagsPredicateType.allCases) {
+                Text($0.displayName)
+            }
+        }
+        .pickerStyle(.segmented)
     }
     .padding()
     .frame(width: 400)
