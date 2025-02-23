@@ -54,7 +54,7 @@ extension Array where Element == TagInfo {
         switch count {
         case 0: "Any Tags"
             // see https://nilcoalescing.com/blog/HandlePluralsInSwiftUITextViewsWithInflection/
-        default: "^[\(count) tag](inflect: true)"
+        default: "^[\(count) Tag](inflect: true)"
         }
     }
 }
