@@ -65,7 +65,7 @@ public struct TagPickerToolbarButton<T: TagsSource>: View {
         // but the toolbar doesn't respect our labelstyle
         // if it's a Button
         .onTapGesture(perform: showPicker)
-        .popover(isPresented: $showingPopover) {
+        .popover(isPresented: $showingPopover, arrowEdge: .bottom) {
             NavigationStack {
                 TagsPickerList(tags: tags,
                                count: maxTags,
