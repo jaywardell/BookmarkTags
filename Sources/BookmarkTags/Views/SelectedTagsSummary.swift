@@ -104,7 +104,7 @@ public struct SelectedTagsSummary: View {
             short
         default:
             
-            HStack {
+            HStack(spacing: 0) {
                 ForEach(0 ..< tags.count, id: \.self) { index in
                     let tag = tags[index]
                     
@@ -128,7 +128,7 @@ public struct SelectedTagsSummary: View {
         default:
             
             Label {
-                HStack {
+                HStack(spacing: 0) {
                     ForEach(0 ..< tags.count, id: \.self) { index in
                         let tag = tags[index]
                         
@@ -157,7 +157,7 @@ public struct SelectedTagsSummary: View {
         default:
   
             Label {
-                HStack {
+                HStack(spacing: 0) {
                     ForEach(0 ..< tags.count, id: \.self) { index in
                         let tag = tags[index]
                         
@@ -179,7 +179,11 @@ public struct SelectedTagsSummary: View {
     @ViewBuilder
     private func concaterator(_ index: Int, in count: Int) -> some View {
         if index == count - 1 {
-            Text(predicate.concatenator)
+            (
+                Text(" ") +
+                Text(predicate.concatenator) +
+                Text(" ")
+            )
                 .foregroundStyle(.secondary)
         }
     }
@@ -238,5 +242,11 @@ public struct SelectedTagsSummary: View {
     }
     .padding()
     .frame(width: 400)
+}
+
+#Preview {
+    SelectedTagsSummary(tags: ExampleTagsSource.examples.last!.tags, predicate: .allTags)
+        .font(.footnote)
+
 }
 #endif
