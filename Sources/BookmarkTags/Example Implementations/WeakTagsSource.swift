@@ -30,6 +30,10 @@ extension WeakTagsSource: TagsSource {
         }
     }
     
+    func deselectAll() {
+        selected = .empty
+    }
+    
     func addTag(named name: String) throws {
         let tag = TagInfo(name: name, colorHue: .random(in: 0 ... 1))
         tags.append(tag)

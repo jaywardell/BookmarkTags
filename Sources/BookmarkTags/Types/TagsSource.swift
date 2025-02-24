@@ -15,6 +15,7 @@ public protocol TagsSource: ObservableObject {
     
     func toggleSelection(for tag: TagInfo) throws
     func selectedBinding(for tag: TagInfo) -> Binding<Bool>
+    func deselectAll()
     
     func addTag(named tag: String) throws
     func delete(_ tag: TagInfo) throws
@@ -91,6 +92,9 @@ extension ExampleTagsSource: TagsSource {
 
     }
 
+    func deselectAll() {
+        selected = .empty
+    }
 }
 
 extension ExampleTagsSource {
