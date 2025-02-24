@@ -27,53 +27,67 @@ struct TagsPickerList<T: TagsSource>: View {
     
     var body: some View {
         
-        ScrollView {
-            
-            if case .many = maxTags {
-                VStack(alignment: .leading) {
-                    // I don't think I want this explaantory text,
-                    // but I'll leave it here just in case for now
-//                    HStack {
-//                        Text("Match")
-                        Picker("Type of Search", selection: $predicateType) {
-                            ForEach(TagsPredicateType.allCases) { type in
-                                Text(type.displayName)
+        VStack {
+            ScrollView {
+                
+                if case .many = maxTags {
+                    VStack(alignment: .leading) {
+                        // I don't think I want this explaantory text,
+                        // but I'll leave it here just in case for now
+    //                    HStack {
+    //                        Text("Match")
+                            Picker("Type of Search", selection: $predicateType) {
+                                ForEach(TagsPredicateType.allCases) { type in
+                                    Text(type.displayName)
+                                }
                             }
-                        }
-                        .pickerStyle(.segmented)
-                        Spacer()
-//                    }
-//                    .padding(.horizontal)
-//                    Text("bookmarks with the tags")
+                            .pickerStyle(.segmented)
+                            Spacer()
+    //                    }
+    //                    .padding(.horizontal)
+    //                    Text("bookmarks with the tags")
+                    }
+                    .font(.headline)
+                    .padding()
+    //                .padding(.bottom)
+    //                .padding(.horizontal)
+                    .opacity(tags.selected.tags.count > 1 ? 1 : 0)
+                    .frame(maxHeight: tags.selected.tags.count > 1 ? nil : 0)
                 }
-                .font(.headline)
-                .padding()
-//                .padding(.bottom)
-//                .padding(.horizontal)
-                .opacity(tags.selected.tags.count > 1 ? 1 : 0)
-                .frame(maxHeight: tags.selected.tags.count > 1 ? nil : 0)
+
+                ForEach(tags.tags) { tag in
+                    TagToggle(
+                        tag,
+                        .trailing,
+                        isSelected: tags.selectedBinding(for: tag),
+                        fullsize: true,
+                        doubleTapAction: {
+                            try? tags.toggleSelection(for: tag)
+                            dismiss()
+                        })
+                    .onChange(of: tags.selectedBinding(for: tag).wrappedValue) { oldValue, newValue in
+                        guard case .one = maxTags else { return }
+                        
+                        if newValue {
+                            deselectAll(except: tag)
+                        }
+                    }
+                    
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
+            
+            if tags.selected.tags.count > 1 {
+                Button("Deslect All") {
+                    tags.deselectAll()
+                }
+                .padding(.bottom)
+                .padding(.trailing)
+                .containerRelativeFrame([.horizontal], alignment: .trailing)
+                .buttonStyle(.borderless)
+                .controlSize(.small)
             }
 
-            ForEach(tags.tags) { tag in
-                TagToggle(
-                    tag,
-                    .trailing,
-                    isSelected: tags.selectedBinding(for: tag),
-                    fullsize: true,
-                    doubleTapAction: {
-                        try? tags.toggleSelection(for: tag)
-                        dismiss()
-                    })
-                .onChange(of: tags.selectedBinding(for: tag).wrappedValue) { oldValue, newValue in
-                    guard case .one = maxTags else { return }
-                    
-                    if newValue {
-                        deselectAll(except: tag)
-                    }
-                }
-                
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
         }
         .toolbar {
             Button("Done") {
