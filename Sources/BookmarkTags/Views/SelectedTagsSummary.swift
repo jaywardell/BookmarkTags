@@ -7,11 +7,16 @@
 
 import SwiftUI
 
-struct SelectedTagsSummary: View {
+public struct SelectedTagsSummary: View {
     
     let tags: [TagInfo]
     let predicate: TagsPredicateType
 
+    public init(tags: [TagInfo], predicate: TagsPredicateType) {
+        self.tags = tags
+        self.predicate = predicate
+    }
+    
     private var bookmarkName: String { "bookmark" }
 
     @Environment(\.colorScheme) var colorScheme
@@ -183,7 +188,7 @@ struct SelectedTagsSummary: View {
         tag.name + (index < count - 2 ? ", " : "")
     }
     
-    var body: some View {
+    public var body: some View {
         // TODO: I could probably refaactor this
         // so that it's just a Label containing 2 ViewThatFits
         // one for image and one for title
