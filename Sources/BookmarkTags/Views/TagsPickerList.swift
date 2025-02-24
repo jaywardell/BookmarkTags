@@ -25,6 +25,16 @@ struct TagsPickerList<T: TagsSource>: View {
         self.maxTags = count
     }
     
+    private var shouldShowDeselectAllButton: Bool {
+        tags.selected.tags.count > 1
+    }
+    
+    private var deselectallButton: some View {
+        Button("Deslect All") {
+            tags.deselectAll()
+        }
+    }
+    
     var body: some View {
         
         VStack {
@@ -76,22 +86,31 @@ struct TagsPickerList<T: TagsSource>: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
-            
-            if tags.selected.tags.count > 1 {
-                Button("Deslect All") {
-                    tags.deselectAll()
-                }
-                .padding(.bottom)
-                .padding(.trailing)
-                .containerRelativeFrame([.horizontal], alignment: .trailing)
-                .buttonStyle(.borderless)
-                .controlSize(.small)
-            }
 
+            #if os(macOS)
+            // on macOS, the toolbar button apparently won't appear
+            // in the toolbar of a popover
+            // so it needs to be placed here instead
+            if shouldShowDeselectAllButton {
+                deselectallButton
+                    .padding(.bottom)
+                    .padding(.trailing)
+                    .containerRelativeFrame([.horizontal], alignment: .trailing)
+                    .buttonStyle(.borderless)
+                    .controlSize(.small)
+            }
+            #endif
         }
         .toolbar {
-            Button("Done") {
-                dismiss()
+            ToolbarItem(placement: .primaryAction){
+                Button("Done") {
+                    dismiss()
+                }
+            }
+            
+            ToolbarItem(placement: .cancellationAction) {
+                deselectallButton
+                    .disabled(!shouldShowDeselectAllButton)
             }
         }
         .animation(.easeInOut, value: tags.selected.tags)
