@@ -159,6 +159,7 @@ public struct TagsEditor<T: TagsSource>: View {
     }
 
     private func finishEditing() {
+        guard isEditing else { return }
         withAnimation(.easeIn) {
             tagOpacity = 0
         } completion: {
