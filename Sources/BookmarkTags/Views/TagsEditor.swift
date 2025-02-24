@@ -9,6 +9,62 @@ import SwiftUI
 import Observation
 import VisualDebugging
 
+extension EnvironmentValues {
+    
+    /// The current tags filter
+    @Entry var tagsEditorSceneID = UUID()
+}
+
+extension Notification.Name {
+    static var userTappedOutsideTagsEditor: Self { .init(rawValue: #function) }
+}
+
+
+struct TagsEditorScene: ViewModifier {
+    
+    let id: UUID
+    
+    init(id: UUID = UUID()) {
+        self.id = id
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .environment(\.tagsEditorSceneID, id)
+            .onTapGesture {
+                NotificationCenter.default.post(name: .userTappedOutsideTagsEditor, object: id)
+            }
+    }
+}
+
+public extension View {
+    func tagsEditorScene(id: UUID = UUID()) -> some View {
+        modifier(TagsEditorScene(id: id))
+    }
+}
+
+fileprivate struct TagsEditorSceneToggleListener: ViewModifier {
+    
+    let callback: () -> Void
+    
+    @Environment(\.tagsEditorSceneID) var tagsEditorSceneID
+
+    func body(content: Content) -> some View {
+        content
+            .onReceive(NotificationCenter.default.publisher(for: .userTappedOutsideTagsEditor)) { notification in
+                guard notification.object as? UUID == tagsEditorSceneID else { return }
+                
+                callback()
+            }
+    }
+}
+
+fileprivate extension View {
+    func onOutsideTap(perform callback: @escaping () -> Void) -> some View {
+        modifier(TagsEditorSceneToggleListener(callback: callback))
+    }
+}
+
 struct TagEditorToggle<T: TagsSource> : View {
     
     let tag: TagInfo
@@ -119,9 +175,7 @@ public struct TagsEditor<T: TagsSource>: View {
         .animation(.easeInOut, value: isEditing)
         .animation(.easeInOut, value: tags.tags)
         .contentShape(Rectangle())
-        .onTapGesture {
-            finishEditing()
-        }
+        .onOutsideTap(perform: finishEditing)
     }
     
     private var tagEditorShouldShowComparison: Bool {
@@ -196,5 +250,6 @@ extension TagsEditor where T == ExampleTagsSource {
     }
     .frame(height: 400)
     .reasonablySizedPreview()
+    .tagsEditorScene()
 }
 #endif
