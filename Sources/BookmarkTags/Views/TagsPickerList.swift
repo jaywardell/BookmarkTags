@@ -51,6 +51,7 @@ struct TagsPickerList<T: TagsSource>: View {
 //                .padding(.bottom)
 //                .padding(.horizontal)
                 .opacity(tags.selected.tags.count > 1 ? 1 : 0)
+                .frame(maxHeight: tags.selected.tags.count > 1 ? nil : 0)
             }
 
             ForEach(tags.tags) { tag in
