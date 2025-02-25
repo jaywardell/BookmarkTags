@@ -179,6 +179,7 @@ public struct TagsEditor<T: TagsSource>: View {
         .animation(.easeInOut, value: isEditing)
         .animation(.easeInOut, value: tags.tags)
         .contentShape(Rectangle())
+        .onTapGesture(perform: finishEditing)
         .onOutsideTap(perform: finishEditing)
     }
     
