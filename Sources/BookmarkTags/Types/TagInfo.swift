@@ -41,3 +41,4 @@ extension TagInfo: Equatable {}
 extension TagInfo: Hashable {}
 extension TagInfo: Sendable {}
 extension TagInfo: Identifiable {}
+extension TagInfo: Codable {}
