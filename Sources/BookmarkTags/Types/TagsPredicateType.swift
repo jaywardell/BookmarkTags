@@ -27,3 +27,5 @@ public enum TagsPredicateType: CaseIterable, Identifiable {
         }
     }
 }
+
+extension TagsPredicateType: Codable {}
