@@ -30,10 +30,14 @@ struct TagsEditorScene: ViewModifier {
 
     func body(content: Content) -> some View {
         content
+        // TODO: this causes problems in iOS
+        // try to figure out a way to make it work
+        #if os(macOS)
             .environment(\.tagsEditorSceneID, id)
             .onTapGesture {
                 NotificationCenter.default.post(name: .userTappedOutsideTagsEditor, object: id)
             }
+        #endif
     }
 }
 
