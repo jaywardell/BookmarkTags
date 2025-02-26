@@ -11,7 +11,7 @@ public struct TagsViewDecoration: View {
     
     let tags: [TagInfo]
     
-    init(tags: [TagInfo]) {
+    public init(tags: [TagInfo]) {
         self.tags = tags
     }
     
