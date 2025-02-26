@@ -1,5 +1,5 @@
 //
-//  SwiftUIView.swift
+//  TagsViewDecoration.swift
 //  BookmarkTags
 //
 //  Created by Joseph Wardell on 2/26/25.
